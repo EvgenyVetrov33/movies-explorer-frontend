@@ -47,3 +47,4 @@ npm run build - запуск сборки проекта
 
 * Ссылка на домен: <https://veter.movies.student.nomoredomains.rocks>
 * [Ссылка на макет в Figma](https://www.figma.com/file/Wd1U0i1lCzhXWpYRZBwvwc/Diploma-(Copy)?type=design&node-id=891-3857&t=1DySy9IXARyUl0Xe-0)
+* [Ссылка на макет на Яндекс.Диск](https://disk.yandex.ru/client/disk)
