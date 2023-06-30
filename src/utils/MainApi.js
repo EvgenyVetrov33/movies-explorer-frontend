@@ -4,7 +4,7 @@ import { BASE_URL } from './constants';
 class MainApi {
 	constructor({
 		baseUrl,
-		headers
+		// headers
 	}) {
 		this._baseUrl = baseUrl;
 		this._userUrl = `${this._baseUrl}/users/me`;
@@ -23,7 +23,7 @@ class MainApi {
 				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${token}`,
 			},
-			credentials: 'include',
+			// credentials: 'include',
 		})
 			.then(res => {
 				if (res.ok) {

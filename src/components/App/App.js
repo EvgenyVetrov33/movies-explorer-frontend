@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import './App.css';
 import React from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
@@ -21,6 +22,7 @@ function App() {
 	const history = useHistory();
 
 	// состояния авторизации пользователя и его данных
+	const [isLoggedIn] = useState(false);
 	const [currentUser, setCurrentUser] = React.useState({});
 	const [loggedIn, setLoggedIn] = React.useState(false);
 	const [isLoaging, setIsLoaging] = React.useState(true);
@@ -37,18 +39,28 @@ function App() {
 
 	// ---ЭФФЕКТЫ---
 	// при логине, если получаем пользователя то обновляем стейты
-	React.useEffect(() => {
-		setIsLoaging(true);
-		mainApi.getUserData()
-			.then(data => {
-				handleLoggedIn();
-				setCurrentUser(data);
+	// React.useEffect(() => {
+	// 	setIsLoaging(true);
+	// 	mainApi.getUserData()
+	// 		.then(data => {
+	// 			handleLoggedIn();
+	// 			setCurrentUser(data);
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err);
+	// 		})
+	// 		.finally(() => setIsLoaging(false))
+	// }, [loggedIn]);
+
+	useEffect(() => {
+		if (isLoggedIn) {
+			Promise.all([mainApi.getUserInfo()]).then(([profileInfo]) => {
+				setCurrentUser(profileInfo);
+			}).catch((err) => {
+				console.error(err)
 			})
-			.catch(err => {
-				console.log(err);
-			})
-			.finally(() => setIsLoaging(false))
-	}, [loggedIn]);
+		}
+	}, [isLoggedIn]);
 
 	// при загрузке страницы получаем данные избранных пользователем фильмов
 	React.useEffect(() => {

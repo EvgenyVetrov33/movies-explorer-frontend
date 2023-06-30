@@ -21,7 +21,6 @@ function Movies({ onLikeClick, savedMoviesList, onDeleteClick }) {
 	const [isMoviesLoaging, setIsMoviesLoaging] = React.useState(false);
 	const [isError, setIsError] = React.useState(false);
 
-
 	// ф-я фильтрации массива и установки его в хранилище и стейт
 	function handleSetFilteredMovies(movies, query, checkbox) {
 		const moviesList = filterMovies(movies, query);

@@ -52,8 +52,8 @@
 
 .search-form__btn {
 	position: absolute;
-	top: 6%;
-	right: 2px;
+	margin: 6px 0px;
+	right: 6px;
 	box-sizing: border-box;
 	min-width: 34px;
 	height: 34px;
