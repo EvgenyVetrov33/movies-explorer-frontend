@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import './App.css';
 import React from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
@@ -17,15 +16,14 @@ import Preloader from '../Preloader/Preloader';
 import mainApi from '../../utils/MainApi';
 import { SUCCESSFUL_CODE } from '../../utils/constants';
 
-
 function App() {
 	const history = useHistory();
 
 	// состояния авторизации пользователя и его данных
-	const [isLoggedIn] = useState(false);
 	const [currentUser, setCurrentUser] = React.useState({});
 	const [loggedIn, setLoggedIn] = React.useState(false);
 	const [isLoaging, setIsLoaging] = React.useState(true);
+	const [emailValue, setEmailValue] = React.useState(null);
 	// состояния фильмов пользователя
 	const [savedMovies, setSavedMovies] = React.useState([]);
 	const [isError, setIsError] = React.useState(false);
@@ -36,31 +34,39 @@ function App() {
 		code: SUCCESSFUL_CODE,
 	});
 
+	React.useEffect(() => {
+		const jwt = localStorage.getItem('jwt');
+		console.log(jwt);
+		if (jwt) {
+			mainApi
+				.checkToken(jwt)
+				.then((res) => {
+					if (res) {
+						setLoggedIn(true);
+						setEmailValue(res.email);
+						history.push('/movies');
+					}
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		}
+	}, [history]);
 
 	// ---ЭФФЕКТЫ---
 	// при логине, если получаем пользователя то обновляем стейты
-	// React.useEffect(() => {
-	// 	setIsLoaging(true);
-	// 	mainApi.getUserData()
-	// 		.then(data => {
-	// 			handleLoggedIn();
-	// 			setCurrentUser(data);
-	// 		})
-	// 		.catch(err => {
-	// 			console.log(err);
-	// 		})
-	// 		.finally(() => setIsLoaging(false))
-	// }, [loggedIn]);
-
-	useEffect(() => {
-		if (isLoggedIn) {
-			Promise.all([mainApi.getUserInfo()]).then(([profileInfo]) => {
-				setCurrentUser(profileInfo);
-			}).catch((err) => {
-				console.error(err)
+	React.useEffect(() => {
+		setIsLoaging(true);
+		mainApi.getUserData()
+			.then(data => {
+				handleLoggedIn();
+				setCurrentUser(data);
 			})
-		}
-	}, [isLoggedIn]);
+			.catch(err => {
+				console.log(err);
+			})
+			.finally(() => setIsLoaging(false))
+	}, [loggedIn]);
 
 	// при загрузке страницы получаем данные избранных пользователем фильмов
 	React.useEffect(() => {
@@ -109,7 +115,9 @@ function App() {
 		setIsLoaging(true);
 		mainApi.login(email, password)
 			.then(res => {
+				localStorage.setItem('jwt', res.token);
 				handleLoggedIn();
+				setEmailValue(email);
 				history.push('/movies');
 			})
 			.catch(({ message, statusCode }) => {
@@ -130,7 +138,8 @@ function App() {
 			.then(res => {
 				setLoggedIn(false);
 				setCurrentUser({});
-				localStorage.clear();
+				localStorage.removeItem('jwt');
+				setEmailValue(null);
 				history.push('/');
 			})
 			.catch(err => {
@@ -201,7 +210,7 @@ function App() {
 					<Preloader />
 				) : (
 					<>
-						<Header loggedIn={loggedIn} />
+						<Header loggedIn={loggedIn} email={emailValue} />
 
 						<Switch>
 							<ProtectedRoute

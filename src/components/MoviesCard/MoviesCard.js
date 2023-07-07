@@ -34,8 +34,12 @@ function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
 				/>
 			</div>
 			<a className="card__image-content" href={pathname === '/saved-movies' ? card.trailer : card.trailerLink} target="_blank" rel="noreferrer">
-				<img className="card__image" src={pathname === '/saved-movies' ? `${card.image}` : `https://api.nomoreparties.co${card.image.url}`} alt={card.nameRU}></img>
+				<img className="card__image" src={pathname === '/saved-movies' ? `${card.image}`
+					: `https://api.nomoreparties.co/${card.image.url}`} alt={card.nameRU}></img>
 			</a>
+			{/* <a className='movie__link' href={card.trailer || card.trailerLink} target='_blank' rel='noreferrer'>
+				<img className='movie__pic' src={`${card.image}`} alt='Фильм' />
+			</a> */}
 		</article>
 	);
 };

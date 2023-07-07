@@ -1,72 +1,59 @@
-import { BASE_URL } from './constants';
+// import { BASE_URL } from './constants';
 
 // --- КЛАСС ДЛЯ ОТПРАВКИ ЗАПРОСОВ НА СЕРВЕР ПРИЛОЖЕНИЯ ---
 class MainApi {
-	constructor({
-		baseUrl,
-		// headers
-	}) {
+	constructor(baseUrl) {
 		this._baseUrl = baseUrl;
 		this._userUrl = `${this._baseUrl}/users/me`;
 		this._moviesUrl = `${this._baseUrl}/movies`;
 		// this._token = headers['authorization'];
 	};
 
+	_checkResponse(res) {
+		if (res.ok) {
+			return res.json();
+		}
+		return Promise.reject(`Ошибка: ${res.status}`)
+	}
+
 	//метод получения информации о пользователе с сервера
 	getUserData() {
 		const token = localStorage.getItem("jwt");
-		return fetch(this._userUrl, {
-			// headers: {
-			// 	authorization: this._token,
-			// },
+		return fetch(`${this._baseUrl}/users/me`, {
+			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${token}`,
 			},
-			// credentials: 'include',
-		})
-			.then(res => {
-				if (res.ok) {
-					return res.json();
-				}
-				return Promise.reject(`Ошибка: ${res.status}`);
-			})
-	};
+		}).then(res => this._checkResponse(res));
+	}
 
 	// метод сохранения отредактированных данных пользователя на сервере
 	updateUserProfile(name, email) {
-		return fetch(this._userUrl, {
+		const token = localStorage.getItem("jwt");
+		return fetch(`${this._baseUrl}/users/me`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
-				authorization: this._token,
+				'Authorization': `Bearer ${token}`,
 			},
-			credentials: 'include',
 			body: JSON.stringify({
 				name,
-				email,
+				email
 			})
-		})
-			.then(res => {
-				return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-			})
-	};
+		}).then(res => this._checkResponse(res));
+	}
 
 	// метод получения избранных пользователем фильмов с сервера
 	getUsersMovies() {
-		return fetch(this._moviesUrl, {
+		const token = localStorage.getItem("jwt");
+		return fetch(`${this._baseUrl}/movies`, {
 			headers: {
-				authorization: this._token,
-			},
-			credentials: 'include',
-		})
-			.then(res => {
-				if (res.ok) {
-					return res.json();
-				}
-				return Promise.reject(`Ошибка: ${res.status}`);
-			})
-	};
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`,
+			}
+		}).then(res => this._checkResponse(res));
+	}
 
 	// метод добавления нового фильма в избранное (создание карточки)
 	saveNewMovie({
@@ -80,15 +67,15 @@ class MainApi {
 		nameRU,
 		nameEN,
 		thumbnail,
-		id,
+		id
 	}) {
-		return fetch(this._moviesUrl, {
+		const token = localStorage.getItem("jwt");
+		return fetch(`${this._baseUrl}/movies`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				authorization: this._token,
+				'Authorization': `Bearer ${token}`,
 			},
-			credentials: 'include',
 			body: JSON.stringify({
 				country: country || 'no country',
 				director,
@@ -100,96 +87,80 @@ class MainApi {
 				nameRU: nameRU || 'no name',
 				nameEN: nameEN || 'no name',
 				thumbnail,
-				movieId: id,
+				movieId: id
 			})
-		})
-			.then(res => {
-				if (res.ok) {
-					return res.json();
-				}
-				return Promise.reject(`Ошибка: ${res.status}`);
-			})
-	};
+		}).then(res => this._checkResponse(res));
+	}
 
 	//метод удаления карточки пользователя с сервера
 	deleteMovie(movieId) {
-		return fetch(`${this._moviesUrl}/${movieId}`, {
+		const token = localStorage.getItem("jwt");
+		return fetch(`${this._baseUrl}/movies/${movieId}`, {
 			method: 'DELETE',
 			headers: {
-				authorization: this._token,
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`,
 			},
-			credentials: 'include',
-		})
-			.then(res => {
-				if (res.ok) {
-					return res.json();
-				}
-				return Promise.reject(`Ошибка: ${res.status}`);
-			})
-	};
+		}).then(res => this._checkResponse(res));
+	}
 
 	register(name, email, password) {
+		// const requestUrl = BASE_URL + '/signup';
 		return fetch(`${this._baseUrl}/signup`, {
 			method: 'POST',
-			credentials: 'include',
 			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
 				name,
 				email,
-				password,
-			})
-		})
-			.then(res => {
-				return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-			})
+				password
+			}),
+		}).then(res => this._checkResponse(res));
 	};
 
 	login(email, password) {
+		// const requestUrl = BASE_URL + '/signin';
 		return fetch(`${this._baseUrl}/signin`, {
 			method: 'POST',
-			credentials: 'include',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				email,
-				password,
-			})
-		})
-			.then(res => {
-				return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-			})
+				password
+			}),
+		}).then(res => this._checkResponse(res));
 	};
 
+	checkToken(token) {
+		return fetch(`${this._baseUrl}/users/me`, {
+			method: 'GET',
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`
+			},
+		}).then(res => this._checkResponse(res));
+	}
+
 	signout() {
+		const token = localStorage.getItem("jwt");
 		return fetch(`${this._baseUrl}/signout`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				authorization: this._token,
+				'Authorization': `Bearer ${token}`,
 			}
-		})
-			.then(res => {
-				if (res.ok) {
-					return res.json;
-				}
-				return Promise.reject(`Ошибка: ${res.status}`);
-			})
-	};
+		}).then(res => this._checkResponse(res));
+	}
 };
 
 //создаем экземпляр класса
 const mainApi = new MainApi({
-	baseUrl: BASE_URL,
+	baseUrl: 'https://veter.student.nomoredomains.rocks',
 	headers: {
 		'Content-Type': 'application/json',
-		authorization: `Bearer ${localStorage.getItem('jwt')}`,
+		authorization: `Bearer ${localStorage.getItem('jwt')}`
 	},
 });
 
