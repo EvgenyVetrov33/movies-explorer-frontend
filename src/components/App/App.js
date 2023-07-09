@@ -131,20 +131,16 @@ function App() {
 			.finally(() => setIsLoaging(false))
 	};
 
-	// обработчик выхода пользователя
-	function handleSignOut() {
-		mainApi.signout()
-			.then(res => {
-				setLoggedIn(false);
-				setCurrentUser({});
-				localStorage.removeItem('jwt');
-				setEmailValue(null);
-				history.push('/');
-			})
-			.catch(err => {
-				console.log(err);
-			})
-	};
+	function onSignOut() {
+		localStorage.removeItem('jwt');
+		setLoggedIn(false);
+		localStorage.removeItem('films');
+		localStorage.removeItem('filmsTumbler');
+		localStorage.removeItem('filmsInputSearch');
+		localStorage.removeItem('savedFilms');
+		localStorage.removeItem('savedFilmsTumbler');
+		localStorage.removeItem('savedFilmsInputSearch');
+	}
 
 	// обработчик изменения данных пользователя
 	function handleUpdateUser(name, email) {
@@ -234,7 +230,7 @@ function App() {
 								exact path='/profile'
 								loggedIn={loggedIn}
 								component={Profile}
-								onSignOut={handleSignOut}
+								onSignOut={onSignOut}
 								onUpdate={handleUpdateUser}
 								infoMessage={infoMessage}
 							/>
