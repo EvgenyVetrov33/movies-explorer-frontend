@@ -36,7 +36,6 @@ function App() {
 
 	React.useEffect(() => {
 		const jwt = localStorage.getItem('jwt');
-		console.log(jwt);
 		if (jwt) {
 			mainApi
 				.checkToken(jwt)

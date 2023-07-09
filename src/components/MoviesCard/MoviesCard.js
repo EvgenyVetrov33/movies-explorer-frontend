@@ -1,9 +1,7 @@
 import './MoviesCard.css';
 import { getTimeFromMin } from '../../utils/utils';
-import { useLocation } from 'react-router-dom';
 
 function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
-	const { pathname } = useLocation();
 
 	// ---ОБРАБОТЧИКИ---
 	//обработчик клика по кнопке лайка
@@ -19,6 +17,9 @@ function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
 	//---РАЗМЕТКА JSX---
 	return (
 		<article className='movie'>
+			<a className='movie__link' href={card.trailer || card.trailerLink} target='_blank' rel='noreferrer'>
+				<img className='movie__pic' src={`${card.image}`} alt='Фильм' />
+			</a>
 			<div className='movie__header'>
 				<div className='movie__info'>
 					<h2 className='movie__title'>{card.nameRU}</h2>
@@ -33,13 +34,6 @@ function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
 					onClick={savedPage || liked ? handleDeleteClick : handleLikeClick}
 				/>
 			</div>
-			<a className="card__image-content" href={pathname === '/saved-movies' ? card.trailer : card.trailerLink} target="_blank" rel="noreferrer">
-				<img className="card__image" src={pathname === '/saved-movies' ? `${card.image}`
-					: `https://api.nomoreparties.co/${card.image.url}`} alt={card.nameRU}></img>
-			</a>
-			{/* <a className='movie__link' href={card.trailer || card.trailerLink} target='_blank' rel='noreferrer'>
-				<img className='movie__pic' src={`${card.image}`} alt='Фильм' />
-			</a> */}
 		</article>
 	);
 };

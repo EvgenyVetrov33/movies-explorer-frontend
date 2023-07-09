@@ -19,6 +19,13 @@
 	box-sizing: border-box;
 }
 
+.movie__header:hover .movie__delete-btn {
+	cursor: pointer;
+	margin-top: -5px;
+	background-size: 12px;
+	background-image: url('../../images/close-menu.svg');
+}
+
 .movie__info {
 	flex-grow: 1;
 	display: flex;
@@ -29,7 +36,7 @@
 }
 
 .movie__title {
-	margin: 0 0 9px;
+	margin: 0 0 17px;
 	font-weight: 500;
 	font-size: 15px;
 	line-height: 18px;
@@ -47,10 +54,11 @@
 }
 
 .movie__btn {
-	/* flex: none; */
+	display: flex;
+	align-self: flex-start;
 	width: 30px;
 	height: 30px;
-	background-color: #F9F9F9;
+	background-color: #fff;
 	background-repeat: no-repeat;
 	background-position: center;
 	border: none;
@@ -62,31 +70,20 @@
 
 .movie__btn:hover {
 	cursor: pointer;
-	background-color: #2be080;
 }
 
 .movie__save-btn {
-	background-size: 10px 13px;
-	background-image: url('../../images/close-menu.svg');
+	margin-top: -5px;
+	background-image: url('../../images/like-no-active.svg');
 }
 
 .movie__save-btn:hover {
-	background-image: url('../../images/close-menu.svg');
+	border-color: red;
+	background-image: url('../../images/like-active.svg');
 }
 
 .movie__save-btn_active {
-	background-image: url('../../images/close-film.svg');
-	background-color: #000;
-}
-
-.movie__save-btn_active:hover {
-	background-color: #000;
-	opacity: .1;
-}
-
-.movie__delete-btn {
-	background-size: 8px;
-	background-image: url('../../images/close-film.svg');
+	background-image: url('../../images/like-active.svg');
 }
 
 .movie__link {
@@ -103,17 +100,9 @@
 }
 
 .movie__link::before {
-	content: url('../../images/arrow.svg');
+	content: '';
 	position: absolute;
 	background-color: rgba(43, 225, 128, .6);
-	color: #fff;
-	font-family: inherit;
-	font-size: 23px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin: 0;
-	padding: 0;
 	top: 0;
 	left: 0;
 	right: 0;

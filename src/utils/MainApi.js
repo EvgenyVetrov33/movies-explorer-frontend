@@ -2,10 +2,10 @@
 
 // --- КЛАСС ДЛЯ ОТПРАВКИ ЗАПРОСОВ НА СЕРВЕР ПРИЛОЖЕНИЯ ---
 class MainApi {
-	constructor(baseUrl) {
-		this._baseUrl = baseUrl;
+	constructor(options) {
+		this._baseUrl = options.baseUrl;
 		this._userUrl = `${this._baseUrl}/users/me`;
-		this._moviesUrl = `${this._baseUrl}/movies`;
+		this._moviesUrl = `${this._baseUrl}/movies`
 		// this._token = headers['authorization'];
 	};
 
@@ -109,6 +109,7 @@ class MainApi {
 		return fetch(`${this._baseUrl}/signup`, {
 			method: 'POST',
 			headers: {
+				"Accept": "application/json",
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
@@ -123,7 +124,10 @@ class MainApi {
 		// const requestUrl = BASE_URL + '/signin';
 		return fetch(`${this._baseUrl}/signin`, {
 			method: 'POST',
-			headers: { "Content-Type": "application/json" },
+			headers: {
+				"Accept": "application/json",
+				"Content-Type": "application/json"
+			},
 			body: JSON.stringify({
 				email,
 				password
@@ -160,7 +164,7 @@ const mainApi = new MainApi({
 	baseUrl: 'https://veter.student.nomoredomains.rocks',
 	headers: {
 		'Content-Type': 'application/json',
-		authorization: `Bearer ${localStorage.getItem('jwt')}`
+		'Authorization': `Bearer ${localStorage.getItem('jwt')}`
 	},
 });
 
