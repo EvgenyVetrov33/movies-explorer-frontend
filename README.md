@@ -48,3 +48,4 @@ npm run build - запуск сборки проекта
 * Ссылка на домен: <https://veter.movies.student.nomoredomains.rocks>
 * [Ссылка на макет в Figma](https://www.figma.com/file/nYQ9pZwtl2hOnZPyHTd4yh/Diploma-(Copy)?node-id=891%3A3857&mode=dev)
 * [Ссылка на макет на Яндекс.Диск](https://disk.yandex.ru/client/disk)
+* ссылка на pull request: [level-3](https://github.com/EvgenyVetrov33/movies-explorer-frontend/pull/2#issue-1795480185)
