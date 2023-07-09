@@ -1,12 +1,9 @@
-// import { BASE_URL } from './constants';
-
 // --- КЛАСС ДЛЯ ОТПРАВКИ ЗАПРОСОВ НА СЕРВЕР ПРИЛОЖЕНИЯ ---
 class MainApi {
 	constructor(options) {
 		this._baseUrl = options.baseUrl;
 		this._userUrl = `${this._baseUrl}/users/me`;
 		this._moviesUrl = `${this._baseUrl}/movies`
-		// this._token = headers['authorization'];
 	};
 
 	_checkResponse(res) {
@@ -105,7 +102,6 @@ class MainApi {
 	}
 
 	register(name, email, password) {
-		// const requestUrl = BASE_URL + '/signup';
 		return fetch(`${this._baseUrl}/signup`, {
 			method: 'POST',
 			headers: {
@@ -121,7 +117,6 @@ class MainApi {
 	};
 
 	login(email, password) {
-		// const requestUrl = BASE_URL + '/signin';
 		return fetch(`${this._baseUrl}/signin`, {
 			method: 'POST',
 			headers: {
