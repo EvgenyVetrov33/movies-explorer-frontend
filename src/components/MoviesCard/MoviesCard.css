@@ -19,13 +19,6 @@
 	box-sizing: border-box;
 }
 
-.movie__header:hover .movie__delete-btn {
-	cursor: pointer;
-	margin-top: -5px;
-	background-size: 12px;
-	background-image: url('../../images/close-menu.svg');
-}
-
 .movie__info {
 	flex-grow: 1;
 	display: flex;
@@ -84,6 +77,19 @@
 
 .movie__save-btn_active {
 	background-image: url('../../images/like-active.svg');
+}
+
+.movie__delete-btn {
+	cursor: pointer;
+	margin-top: -5px;
+	background-size: 12px;
+	background-image: url('../../images/close-menu.svg');
+	transition: transform .4s ease 0s;
+	transform: scale(1);
+}
+
+.movie__delete-btn:hover {
+	transform: scale(1.4);
 }
 
 .movie__link {
