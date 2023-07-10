@@ -139,19 +139,6 @@ class MainApi {
 			},
 		}).then(res => this._checkResponse(res));
 	}
-
-	signout() {
-		const token = localStorage.getItem("jwt");
-		return fetch(`${this._baseUrl}/signout`, {
-			method: 'POST',
-			credentials: 'include',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`,
-			}
-		}).then(res => this._checkResponse(res));
-	}
 };
 
 //создаем экземпляр класса

@@ -130,10 +130,13 @@ function App() {
 			})
 			.finally(() => setIsLoaging(false))
 	};
-
+	// Обработчик выхода пользователя
 	function onSignOut() {
 		localStorage.removeItem('jwt');
 		setLoggedIn(false);
+		setEmailValue(null);
+		setCurrentUser({});
+		history.push('/signin');
 		localStorage.removeItem('films');
 		localStorage.removeItem('filmsTumbler');
 		localStorage.removeItem('filmsInputSearch');
