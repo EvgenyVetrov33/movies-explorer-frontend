@@ -137,10 +137,10 @@ function App() {
 		setEmailValue(null);
 		setCurrentUser({});
 		history.push('/signin');
-		localStorage.removeItem('films');
-		localStorage.removeItem('filmsTumbler');
-		localStorage.removeItem('filmsInputSearch');
-		localStorage.removeItem('savedFilms');
+		localStorage.removeItem('movies');
+		localStorage.removeItem('searchQuery');
+		localStorage.removeItem('shortFilms');
+		localStorage.removeItem('savedMovies');
 		localStorage.removeItem('savedFilmsTumbler');
 		localStorage.removeItem('savedFilmsInputSearch');
 	}
