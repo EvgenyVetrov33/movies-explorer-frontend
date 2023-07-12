@@ -1,4 +1,5 @@
 import React from 'react';
+import * as EmailValidator from 'email-validator';
 
 export function useFormWithValidation() {
 
@@ -6,45 +7,28 @@ export function useFormWithValidation() {
 	const [errors, setErrors] = React.useState({});
 	const [isValid, setIsValid] = React.useState(false);
 
-	//---ОБРАБОТЧИКИ---
-	function handleChange(e) {
-		const input = e.target;
-		const name = input.name;
-		const value = input.value;
+	const [isValidInputs, setIsValidInputs] = React.useState({});
 
+	//---ОБРАБОТЧИКИ---
+	const handleChange = (event) => {
+		const target = event.target;
+		const name = target.name;
+		const value = target.value;
+		setIsValidInputs('');
 		setValues({ ...values, [name]: value });
-		setErrors({ ...errors, [name]: input.validationMessage });
-		setIsValid(input.closest('form').checkValidity());
+		setErrors({ ...errors, [name]: target.validationMessage });
+		setIsValid(target.closest("form").checkValidity() && errors.email !== 'Неверный формат почты')
+		if (!target.validationMessage && name === "email") {
+			if (!EmailValidator.validate(value)) {
+				setErrors({ ...errors, "email": 'Неверный формат почты' });
+				setIsValid(false);
+			}
+			else {
+				setErrors({ ...errors, "email": '' });
+				setIsValid(target.closest("form").checkValidity())
+			}
+		}
 	};
 
-	return { values, errors, isValid, handleChange, setValues, setIsValid, setErrors };
+	return { values, errors, isValid, handleChange, setValues, setIsValid, setErrors, isValidInputs };
 };
-
-// export function useFormWithValidation(name, value) {
-// 	let errors = {};
-// 	if (name === 'email') {
-// 		if (!value) {
-// 			errors = { [name]: 'Email обязателен' };
-// 		} else if (!/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/.test(value)) {
-// 			errors = { [name]: 'Некорректный email' };
-// 		}
-// 	}
-// 	if (name === 'password') {
-// 		if (!value) {
-// 			errors = { [name]: 'Введите пароль' };
-// 		}
-// 	}
-// 	if (name === 'name') {
-// 		if (!value) {
-// 			errors = { [name]: 'Укажите имя' };
-// 		} else if (!/^([А-Я]{1}[а-яё]{1,23}|[A-Z]{1}[a-z]{1,23})$/gm.test(value)) {
-// 			errors = { [name]: 'Укажите корректное имя' };
-// 		} else if (value.length < 1) {
-// 			errors = { [name]: 'Укажите имя не короче 2 символов' };
-// 		}
-// 	}
-
-// 	return errors;
-// }
-
-// export default useFormWithValidation;

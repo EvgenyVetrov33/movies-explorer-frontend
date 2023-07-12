@@ -135,14 +135,13 @@ function App() {
 		localStorage.removeItem('jwt');
 		setLoggedIn(false);
 		setEmailValue(null);
-		setCurrentUser({});
+		setCurrentUser('');
+		setSavedMovies([]);
 		history.push('/signin');
 		localStorage.removeItem('movies');
 		localStorage.removeItem('searchQuery');
 		localStorage.removeItem('shortFilms');
 		localStorage.removeItem('savedMovies');
-		localStorage.removeItem('savedFilmsTumbler');
-		localStorage.removeItem('savedFilmsInputSearch');
 	}
 
 	// обработчик изменения данных пользователя
